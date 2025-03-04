@@ -20,6 +20,9 @@ services:
       # You almost never want to change the value of the DATA_DIR variable.
       # If you want to mount a custom directory, change the volume mapping above instead.
       DATA_DIR: /data # DON'T CHANGE THIS
+    networks:
+      - dokploy-network
+
   chrome:
     image: gcr.io/zenika-hub/alpine-chrome:123
     restart: unless-stopped
@@ -30,6 +33,9 @@ services:
       - --remote-debugging-address=0.0.0.0
       - --remote-debugging-port=9222
       - --hide-scrollbars
+    networks:
+      - dokploy-network
+
   meilisearch:
     image: getmeili/meilisearch:v1.11.1
     restart: unless-stopped
@@ -39,7 +45,13 @@ services:
       MEILI_NO_ANALYTICS: "true"
     volumes:
       - meilisearch:/meili_data
+    networks:
+      - dokploy-network
 
 volumes:
   meilisearch:
   data:
+
+networks:
+  dokploy-network:
+    external: true
